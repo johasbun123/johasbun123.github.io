@@ -1,5 +1,97 @@
 ---
-title: "About This Website"
+title: "McNemar"
 ---
 
-More about this website.
+## Ejercicio prueba McNemar
+
+Un psicólogo quiere comparar un fármaco para tratar la enuresis con un placebo. Cien niños enuréticos reciben el fármaco (Endurin) y un placebo en un estudio a doble ciego realizado durante seis meses. Durante el estudio, cada niño recibe seis tratamientos con el fármaco y seis con el placebo, y cada tratamiento dura una semana. Para garantizar que no se produzcan efectos de arrastre de un tratamiento a otro, durante la semana siguiente a cada tratamiento no se administra al niño ni el fármaco ni el placebo. El orden de presentación de los 12 periodos de tratamiento para cada niño se determina aleatoriamente. La variable dependiente del estudio es la opinión de los padres sobre si el niño mejora o no en cada una de las dos condiciones experimentales. La siguiente tabla resume los resultados del estudio. ¿Indican los datos que el fármaco fue eficaz?
+
+|       |    | Despues |    |
+|-------|----|---------|----|
+|       |    | Si      | No |
+| Antes | Si | 41      | 36 |
+|       | No | 10      | 13 |
+
+### Supuestos
+
+- Los pares son independientes
+
+- La escala es nominal con dos categorías
+
+### Hipótesis
+
+$H_0$: Las condiciones de las proporciones son iguales antes y después de aplicar el tratamiento
+
+$H_a$: Las proporciones de las dos condiciones son diferentes antes y después de aplicar el tratamiento
+
+
+### Desarrollo manual
+
+- Crear una tabla de contingencia con los datos
+
+|       |    | Despues |    |
+|-------|----|---------|----|
+|       |    | Si      | No |
+| Antes | Si | 41 = a     | 36 = b|
+|       | No | 10 = c     | 13 = d|
+
+- Calcular el estadístico de prueba:
+
+$$X^{2} = \frac{(b-c)^{2}}{b + c}$$
+donde "b" y "c" son los valores de la tabla de contingencia
+
+$X^{2} = \frac{(36-10)^{2}}{36 + 10}$
+
+$X^{2} = \frac{338}{23} = 14.69$
+
+- Obtener el valor crítico
+
+Obtenemos la estadpistica de prueba utilizando una distribución chi-cuadrado con 1 grado de libertad
+
+```{r}
+qchisq(1-0.05, 1)
+```
+
+- Criterio de rechazo:
+
+Rechazamos la hipótesis nula si nuestro estadístico de prueba es mayor que el valor crítico chi-cuadrado.
+
+- Conclusión:
+
+Como nuestro estadístico de prueba (14.69) es mayor al valor crítico chi-cuadrado (3.84), rechazamos la hipótesis nula con un nivel de significancia del 5%. Por lo tanto podemos decir que las proporciones de las dos condiciones son diferentes antes y después de aplicar el tratamiento.
+
+### Desarrollo en Rstudio
+
+```{r}
+#Paso 1: Crear la matriz de contingencia con los datos
+#La matriz muestra las frecuencias de las combinaciones "Antes" y "Después".
+#Los primeros dos valores corresponden a "Antes" y los ultimos dos a "Después"
+datos <- matrix(c(41, 10, 36, 13), nrow = 2,
+                dimnames = list("Antes" = c("No", "Si"),
+                                "Después" = c("No", "Si")))
+print(datos)
+
+#Paso 2: Realizar la prueba de McNemar
+#Extraer los valores b y c de la matriz de contingencia
+b <- datos[1, 2] # Frecuencia de Antes-No y Después-Si
+c <- datos[2, 1] # Frecuencia de Antes-Si y Después-No
+
+#Calcular la estadística de prueba de McNemar
+chi_squared <- ((b - c)^2) / (b + c)
+chi_squared
+
+#Paso 3: Interpretación del resultado
+#Nivel de significancia
+alpha <- 0.05
+
+#Valor crítico de chi-cuadrado con 1 grado de libertad
+chi_critico <- qchisq(1-alpha, df = 1)
+chi_critico
+
+#Comparar la estadística chi-cuadrado con el valor crítico
+if (chi_squared > chi_critico) {
+  cat("Rechazar la hipótesis nula: hay un cambio significativo en las respuestas antes y después del tratamiento.\n")
+} else {
+  cat("No rechazar la hipótesis nula: no hay un cambio significativo en las respuestas antes y después del tratamiento.\n")
+}
+```

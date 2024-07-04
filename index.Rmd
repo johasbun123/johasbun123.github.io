@@ -1,5 +1,127 @@
 ---
-title: "My Website"
+title: "Kruskal-Wallis"
 ---
 
-Hello, Website!
+## Ejercicio prueba Kruskal-Wallis
+
+En un laboratorio se están desarrollando nuevos fármacos para el tratamiento de la diabetes. Se desea evaluar si tres diferentes fármacos tienen efectos distintos en la reducción del azucar en la sangre de pacientes diabéticos. Los siguientes datos recopilados son las reducción de azucar en la sangre de 15 pacientes tratados con tres diferentes fármacos.
+
+| Fármaco 1 | Fármaco 2 | Fármaco 3|
+|:---------:|:---------:|:--------:|
+| 6         | 15        | 2        |
+| 9         | 13        | 3        |
+| 10        | 11        | 4        |
+| 12        | 14        | 1        |
+| 5         | 7         | 8        |
+
+### Supuestos
+
+- Las muestras son independientes
+
+- No requiere que los datos provengan de una distribución Normal
+
+### Hipótesis
+
+$H_0$: La hipótesis nula plantea que no hay diferencias significativas en la reducción del azucar en la sangre entre los tres farmacos.
+
+$H_a$: La hipótesis alternativa plantea que hay al menos un grupo que presenta diferencias significativas en la reducción del azucar en la sangre entre los tres fármacos.
+
+### Desarrollo manual
+
+- Asignamos los rangos de los datos al ordenarlos en una lista de menor a mayor.
+
+| Fármaco 1 | Rangos 1  | Fármaco 2| Rangos 2  | Fármaco 3 | Rangos 3 |
+|:---------:|:---------:|:--------:|:---------:|:---------:|:--------:|
+| 6         | 6         | 15       | 15        | 2         | 2        |
+| 9         | 9         | 13       | 13        | 3         | 3        |
+| 10        | 10        | 11       | 11        | 4         | 4        |
+| 12        | 12        | 14       | 14        | 1         | 1        |
+| 5         | 5         | 7        | 7         | 8         | 8        |
+
+- Calcular el estadístico de prueba:
+
+Obtenemos la suma de cada conjunto de rangos
+
+$Rangos_1 = 6 + 9 + 10 + 12 + 5 = 42$
+
+$Rangos_2= 15 + 13 + 11 + 14 + 7 = 60$
+
+$Rangos_3 = 2 + 3 + 4 + 1 + 8 = 18$
+
+Reemplazamos lo obtenido en la fórmula:
+
+$$H = \frac{12}{N(N-1)} \sum^{k}_{i=1}\frac{R_{i}^2}{n_{i}}-3(N+1)$$
+
+$H= \frac{12}{15(16)}(\frac{42^2}{5}+\frac{60^2}{5}+\frac{18^2}{5})-3(16)$
+
+$H=\frac{1764 + 3600 + 324}{100}-48$
+
+$H=\frac{222}{25} = 8.88$
+
+- Calcular el valor crítico:
+
+Obtenemos el valor crítico realizando una chi-cuadrado con k-1 grados de libertad
+
+```{r}
+qchisq(0.95, 2)
+```
+
+- Criterio de rechazo:
+
+Rechazamos la hipótesis nula cuando el valor calculado H sea mayor al valor crítico
+
+- Conclusión:
+
+Como el valor calculado H (8.88) es mayor al valor crítico (5.99), rechazamos la hipótesis nula con un nivel de significancia del 5%. Por lo tanto podemos decir que hay al menos un grupo que presenta diferencias significativas en la reducción del azucar en la sangre entre los tres fármacos.
+
+### Desarrollo en Rstudio
+
+```{r}
+#Paso 1: Crear un conjunto de datos
+#Sustituir los valores de 'grupo' y 'valores' con los datos de su experimento
+grupo <- factor(c(rep("Fármaco1", 5), rep("Fármaco2", 5), rep("Fármaco3", 5)))
+valores <- c(6, 9, 10, 12, 5,
+             15, 13, 11, 14, 7,
+             2, 3, 4, 1, 8)
+
+#Crear un data frame con los datos
+datos <- data.frame(grupo, valores)
+
+#Paso 2: Ordenar los datos y asignar rangos
+datos <- datos[order(datos$valores),]
+datos$rango <- rank(datos$valores)
+
+#Paso 3: Calcular la suma de rangos por grupo
+#Agrupar los datos por 'grupo' y sumar los rangos dentro de cada grupo
+suma_rangos <- aggregate(rango ~ grupo, data = datos, sum)
+
+#Paso 4: Calcular la estadística de prueba H
+#Calcular el tamaño de la muestra para cada grupo
+n <- table(grupo)
+
+#Calcular el número total de observaciones
+N <- sum(n)
+
+#Usar la fórmula para calcular H
+H <- (12 / (N * (N + 1))) * sum((suma_rangos$rango^2) / n) - 3 * (N + 1)
+H
+
+#Paso 5: Calcular los grados de libertad (número de grupos-1)
+k <- length(unique(grupo))
+df <- k - 1
+
+#Paso 6: Determinar el valor crítico de chi-cuadrado
+#Establecer el nivel de significancia
+alpha <- 0.05
+#Calcular el valor crítico de chi-cuadrado
+chi_critico <- qchisq(1 - alpha, df)
+chi_critico
+
+#Paso 7: Interpretar el resultado
+#Si H es mayor que el valor crítico, rechazar la hipótesis nula
+if (H > chi_critico) {
+  cat("Rechazar la hipótesis nula: hay diferencias significativas entre las medianas de los grupos.\n")
+} else {
+  cat("No rechazar la hipótesis nula: no hay diferencias significativas entre las medianas de los grupos.\n")
+}
+```

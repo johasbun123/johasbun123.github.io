@@ -11,12 +11,12 @@
 
 
 
-<title>About This Website</title>
+<title>McNemar</title>
 
 <script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,7 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
@@ -238,15 +238,15 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">My Website</a>
+      <a class="navbar-brand" href="index.html">Ejercicios prueba Kruskal-Wallis y McNemar</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="index.html">Kruskal-Wallis</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="about.html">McNemar</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -260,12 +260,174 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About This Website</h1>
+<h1 class="title toc-ignore">McNemar</h1>
 
 </div>
 
 
-<p>More about this website.</p>
+<div id="ejercicio-prueba-mcnemar" class="section level2">
+<h2>Ejercicio prueba McNemar</h2>
+<p>Un psicólogo quiere comparar un fármaco para tratar la enuresis con
+un placebo. Cien niños enuréticos reciben el fármaco (Endurin) y un
+placebo en un estudio a doble ciego realizado durante seis meses.
+Durante el estudio, cada niño recibe seis tratamientos con el fármaco y
+seis con el placebo, y cada tratamiento dura una semana. Para garantizar
+que no se produzcan efectos de arrastre de un tratamiento a otro,
+durante la semana siguiente a cada tratamiento no se administra al niño
+ni el fármaco ni el placebo. El orden de presentación de los 12 periodos
+de tratamiento para cada niño se determina aleatoriamente. La variable
+dependiente del estudio es la opinión de los padres sobre si el niño
+mejora o no en cada una de las dos condiciones experimentales. La
+siguiente tabla resume los resultados del estudio. ¿Indican los datos
+que el fármaco fue eficaz?</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th></th>
+<th>Despues</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Si</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Antes</td>
+<td>Si</td>
+<td>41</td>
+<td>36</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>No</td>
+<td>10</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+<div id="supuestos" class="section level3">
+<h3>Supuestos</h3>
+<ul>
+<li><p>Los pares son independientes</p></li>
+<li><p>La escala es nominal con dos categorías</p></li>
+</ul>
+</div>
+<div id="hipótesis" class="section level3">
+<h3>Hipótesis</h3>
+<p><span class="math inline">\(H_0\)</span>: Las condiciones de las
+proporciones son iguales antes y después de aplicar el tratamiento</p>
+<p><span class="math inline">\(H_a\)</span>: Las proporciones de las dos
+condiciones son diferentes antes y después de aplicar el tratamiento</p>
+</div>
+<div id="desarrollo-manual" class="section level3">
+<h3>Desarrollo manual</h3>
+<ul>
+<li>Crear una tabla de contingencia con los datos</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th></th>
+<th>Despues</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Si</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Antes</td>
+<td>Si</td>
+<td>41 = a</td>
+<td>36 = b</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>No</td>
+<td>10 = c</td>
+<td>13 = d</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Calcular el estadístico de prueba:</li>
+</ul>
+<p><span class="math display">\[X^{2} = \frac{(b-c)^{2}}{b + c}\]</span>
+donde “b” y “c” son los valores de la tabla de contingencia</p>
+<p><span class="math inline">\(X^{2} = \frac{(36-10)^{2}}{36 +
+10}\)</span></p>
+<p><span class="math inline">\(X^{2} = \frac{338}{23} =
+14.69\)</span></p>
+<ul>
+<li>Obtener el valor crítico</li>
+</ul>
+<p>Obtenemos la estadpistica de prueba utilizando una distribución
+chi-cuadrado con 1 grado de libertad</p>
+<pre class="r"><code>qchisq(1-0.05, 1)</code></pre>
+<pre><code>## [1] 3.841459</code></pre>
+<ul>
+<li>Criterio de rechazo:</li>
+</ul>
+<p>Rechazamos la hipótesis nula si nuestro estadístico de prueba es
+mayor que el valor crítico chi-cuadrado.</p>
+<ul>
+<li>Conclusión:</li>
+</ul>
+<p>Como nuestro estadístico de prueba (14.69) es mayor al valor crítico
+chi-cuadrado (3.84), rechazamos la hipótesis nula con un nivel de
+significancia del 5%. Por lo tanto podemos decir que las proporciones de
+las dos condiciones son diferentes antes y después de aplicar el
+tratamiento.</p>
+</div>
+<div id="desarrollo-en-rstudio" class="section level3">
+<h3>Desarrollo en Rstudio</h3>
+<pre class="r"><code>#Paso 1: Crear la matriz de contingencia con los datos
+#La matriz muestra las frecuencias de las combinaciones &quot;Antes&quot; y &quot;Después&quot;.
+#Los primeros dos valores corresponden a &quot;Antes&quot; y los ultimos dos a &quot;Después&quot;
+datos &lt;- matrix(c(41, 10, 36, 13), nrow = 2,
+                dimnames = list(&quot;Antes&quot; = c(&quot;No&quot;, &quot;Si&quot;),
+                                &quot;Después&quot; = c(&quot;No&quot;, &quot;Si&quot;)))
+print(datos)</code></pre>
+<pre><code>##      Después
+## Antes No Si
+##    No 41 36
+##    Si 10 13</code></pre>
+<pre class="r"><code>#Paso 2: Realizar la prueba de McNemar
+#Extraer los valores b y c de la matriz de contingencia
+b &lt;- datos[1, 2] # Frecuencia de Antes-No y Después-Si
+c &lt;- datos[2, 1] # Frecuencia de Antes-Si y Después-No
+
+#Calcular la estadística de prueba de McNemar
+chi_squared &lt;- ((b - c)^2) / (b + c)
+chi_squared</code></pre>
+<pre><code>## [1] 14.69565</code></pre>
+<pre class="r"><code>#Paso 3: Interpretación del resultado
+#Nivel de significancia
+alpha &lt;- 0.05
+
+#Valor crítico de chi-cuadrado con 1 grado de libertad
+chi_critico &lt;- qchisq(1-alpha, df = 1)
+chi_critico</code></pre>
+<pre><code>## [1] 3.841459</code></pre>
+<pre class="r"><code>#Comparar la estadística chi-cuadrado con el valor crítico
+if (chi_squared &gt; chi_critico) {
+  cat(&quot;Rechazar la hipótesis nula: hay un cambio significativo en las respuestas antes y después del tratamiento.\n&quot;)
+} else {
+  cat(&quot;No rechazar la hipótesis nula: no hay un cambio significativo en las respuestas antes y después del tratamiento.\n&quot;)
+}</code></pre>
+<pre><code>## Rechazar la hipótesis nula: hay un cambio significativo en las respuestas antes y después del tratamiento.</code></pre>
+</div>
+</div>
 
 
 

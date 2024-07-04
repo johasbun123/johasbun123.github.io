@@ -1,9 +1,14 @@
-name: "my-website"
+name: "Bienvenido a los ejercicios de pruebas de Kruskal-Wallis y McNemar"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Ejercicios prueba Kruskal-Wallis y McNemar"
   left:
-    - text: "Home"
+    - text: "Kruskal-Wallis"
       href: index.html
-    - text: "About"
+    - text: "McNemar"
       href: about.html
+
+output:
+  html_document:
+    theme: united
+    highlight: textmate
