@@ -1,2 +1,2 @@
-# johasbun123.github.io
-Repositorio No Paramétrica
+# Ingenieria_Estadística.github.io
+Proyecto Estadística
